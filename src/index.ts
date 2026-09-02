@@ -46,7 +46,7 @@ class DeLonghiCoffeePlatform implements DynamicPlatformPlugin {
     const power = accessory.getService(this.Service.Switch) || accessory.addService(this.Service.Switch, accessory.displayName);
     power.getCharacteristic(this.api.hap.Characteristic.On).onGet(() => this.status.power ?? false).onSet(async value => this.command(value ? "start" : "stop"));
     const online = accessory.getService(this.Service.AccessoryInformation)!;
-    online.setCharacteristic(this.api.hap.Characteristic.Manufacturer, "De'Longhi").setCharacteristic(this.api.hap.Characteristic.Model, "Coffee Link compatible machine");
+    online.setCharacteristic(this.api.hap.Characteristic.Manufacturer, "De'Longhi").setCharacteristic(this.api.hap.Characteristic.Model, this.config.machineModel || "ECAM610.75 PrimaDonna Soul");
     const water = accessory.getService("Water") || accessory.addService(this.Service.HumiditySensor, "Water");
     water.getCharacteristic(this.api.hap.Characteristic.CurrentRelativeHumidity).onGet(() => this.status.waterLevel ?? 0);
     const beans = accessory.getService("Beans") || accessory.addService(this.Service.HumiditySensor, "Beans");
