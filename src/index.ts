@@ -1,6 +1,7 @@
 import { API, DynamicPlatformPlugin, Logger, PlatformAccessory, Service } from "homebridge";
 import { CloudBridgeTransport } from "./cloud-bridge";
 import { discoverIp } from "./discovery";
+import { LocalWifiTransport } from "./local-wifi";
 import { CoffeeStatus, CoffeeTransport, PlatformConfig } from "./types";
 
 const PLUGIN = "homebridge-delonghi-coffee";
@@ -12,6 +13,7 @@ class DeLonghiCoffeePlatform implements DynamicPlatformPlugin {
   private accessory?: PlatformAccessory;
   private readonly Service: typeof Service;
   private transport?: CoffeeTransport;
+  private localTransport?: LocalWifiTransport;
   private status: CoffeeStatus = { online: false, source: "unavailable" };
   constructor(private readonly log: Logger, private readonly config: PlatformConfig, private readonly api: API) {
     this.Service = api.hap.Service;
@@ -25,9 +27,15 @@ class DeLonghiCoffeePlatform implements DynamicPlatformPlugin {
       this.api.registerPlatformAccessories(PLUGIN, PLATFORM, [this.accessory]);
     }
     this.configureServices(this.accessory);
+    let machineIp: string | undefined;
     if (this.config.enableLanDiscovery !== false) {
-      try { const ip = await discoverIp({ knownIp: this.config.lanIp, discoveryUrl: this.config.discoveryUrl, token: this.config.cloudBridgeToken }); if (ip) this.log.info(`Machine LAN address discovered: ${ip} (discovery only; direct LAN control remains disabled).`); }
+      try { machineIp = await discoverIp({ knownIp: this.config.lanIp, discoveryUrl: this.config.discoveryUrl, token: this.config.cloudBridgeToken }); if (machineIp) this.log.info(`Machine LAN address discovered: ${machineIp}.`); }
       catch (error) { this.log.warn(`LAN discovery failed: ${(error as Error).message}`); }
+    }
+    if (machineIp && this.config.lanKey && this.config.advertisedIp) {
+      this.localTransport = new LocalWifiTransport({ machineIp, lanKey: this.config.lanKey, advertisedIp: this.config.advertisedIp, port: this.config.localPort || 10280, commandPayloads: this.config.commandPayloads, onStatus: status => { this.status = status; this.accessory?.getService(this.Service.Switch)?.updateCharacteristic(this.api.hap.Characteristic.On, status.power ?? false); } });
+      try { await this.localTransport.start(); this.transport = this.localTransport; this.log.info("Local Wi-Fi listener registered. Commands require configured verified payloads."); await this.refresh(); return; }
+      catch (error) { this.log.warn(`Local Wi-Fi mode unavailable; using cloud fallback when configured: ${(error as Error).message}`); await this.localTransport.stop().catch(() => undefined); this.localTransport = undefined; }
     }
     if (!this.config.cloudBridgeUrl) { this.log.warn("No Coffee Link/Ayla bridge configured; exposing a safe unavailable accessory."); return; }
     this.transport = new CloudBridgeTransport(this.config.cloudBridgeUrl, this.config.cloudBridgeToken);
