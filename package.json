@@ -1,8 +1,8 @@
 {
   "name": "homebridge-delonghi-coffee",
-  "version": "2.0.0",
-  "description": "Homebridge platform for De'Longhi Coffee Link machines",
-  "keywords": ["homebridge-plugin", "delonghi", "coffee-link", "primadonna-soul"],
+  "version": "3.0.0",
+  "description": "Local Wi-Fi Homebridge platform for De'Longhi Coffee Link machines",
+  "keywords": ["homebridge-plugin", "delonghi", "coffee-link", "primadonna-soul", "wifi", "homebridge"],
   "main": "dist/index.js",
   "engines": { "node": ">=20.0.0", "homebridge": ">=1.8.0" },
   "license": "MIT",
