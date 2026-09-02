@@ -1,10 +1,30 @@
 # homebridge-delonghi-coffee
 
-Homebridge V2 platform for De'Longhi Coffee Link machines, including PrimaDonna Soul.
+Homebridge V3 platform for De'Longhi Coffee Link machines, including PrimaDonna Soul.
 
-## Safety-first V2
+## V3 local Wi-Fi mode
 
-This plugin can automatically resolve a machine's **IP address** from a configured discovery endpoint or a saved IP. It deliberately does **not** treat an IP address as proof that a local command protocol is safe to use. It never sends raw LAN commands. Commands and telemetry go through an explicitly configured Coffee Link/Ayla-compatible bridge (`cloudBridgeUrl`).
+V3 uses De'Longhi's authenticated local registration and encrypted callback flow when you provide the machine IP, its cloud-issued LAN key, and the Homebridge host's LAN IP. It starts a listener (default port `10280`), registers it with the machine, handles key exchange, accepts encrypted local telemetry, and queues only command payloads that **you have verified for your exact machine/firmware**.
+
+```json
+{
+  "platform": "DeLonghiCoffee",
+  "lanIp": "192.168.1.42",
+  "lanKey": "cloud-issued-secret",
+  "advertisedIp": "192.168.1.10",
+  "localPort": 10280,
+  "commandPayloads": {
+    "start": { "your": "verified ECAM payload" },
+    "stop": { "your": "verified ECAM payload" }
+  }
+}
+```
+
+`commandPayloads` is intentional: recipes and command layouts vary between firmware/models. Without a verified payload, the HomeKit switch refuses the command instead of sending a speculative brew request. If the local listener cannot connect, the configured cloud bridge remains the fallback.
+
+## Safety-first design
+
+This plugin can automatically resolve a machine's **IP address** from a configured discovery endpoint or a saved IP. V3 local mode requires a cloud-issued LAN key and a successful encrypted handshake; an IP address alone never enables control.
 
 That distinction matters: PrimaDonna Soul's LAN mode uses a device-specific authenticated, encrypted protocol and requires cloud-issued LAN credentials. Discovery alone must not enable control.
 
@@ -46,6 +66,6 @@ npm test
 
 ## Compatibility and limitations
 
-Coffee Link devices use Ayla-backed services, but firmware and model property mappings differ. This project does not impersonate the Coffee Link app or retain its login credentials. A direct LAN transport should only be added after a confirmed protocol test on the target model, including key exchange and encrypted command validation.
+Coffee Link devices use Ayla-backed services, but firmware and model property mappings differ. This project does not impersonate the Coffee Link app or retain its login credentials. Local telemetry is enabled only after a confirmed key exchange. Local commands are enabled only for payloads you explicitly configure for the target model.
 
 This is an independent project and is not affiliated with De'Longhi, Ayla Networks, Apple, or Homebridge.
