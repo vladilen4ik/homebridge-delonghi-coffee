@@ -5,6 +5,7 @@
     "type": "object",
     "properties": {
       "name": { "title": "Accessory name", "type": "string", "default": "De'Longhi Coffee" },
+      "machineModel": { "title": "Machine model", "type": "string", "enum": ["ECAM610.75"], "default": "ECAM610.75", "description": "PrimaDonna Soul / millcore Wi-Fi profile." },
       "pollIntervalSeconds": { "title": "Poll interval (seconds)", "type": "integer", "default": 60, "minimum": 15 },
       "lanKey": { "title": "LAN key", "type": "string", "format": "password", "description": "Cloud-issued LAN key for this machine. Required for local Wi-Fi mode; never share it." },
       "advertisedIp": { "title": "Homebridge LAN IP", "type": "string", "description": "IP address the coffee machine can call back to." },
