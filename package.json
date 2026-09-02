@@ -1,0 +1,14 @@
+{
+  "name": "homebridge-delonghi-coffee",
+  "version": "2.0.0",
+  "description": "Homebridge platform for De'Longhi Coffee Link machines",
+  "keywords": ["homebridge-plugin", "delonghi", "coffee-link", "primadonna-soul"],
+  "main": "dist/index.js",
+  "engines": { "node": ">=20.0.0", "homebridge": ">=1.8.0" },
+  "license": "MIT",
+  "repository": { "type": "git", "url": "git+https://github.com/vladilen4ik/homebridge-delonghi-coffee.git" },
+  "homepage": "https://github.com/vladilen4ik/homebridge-delonghi-coffee",
+  "bugs": { "url": "https://github.com/vladilen4ik/homebridge-delonghi-coffee/issues" },
+  "scripts": { "build": "tsc -p tsconfig.json", "test": "npm run build && node --test dist/test/**/*.test.js", "lint": "tsc -p tsconfig.json --noEmit" },
+  "devDependencies": { "@types/node": "^22.10.2", "homebridge": "^1.8.5", "typescript": "^5.7.2" }
+}
