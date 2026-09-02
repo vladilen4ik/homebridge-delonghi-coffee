@@ -7,6 +7,10 @@ export interface PlatformConfig {
   enableLanDiscovery?: boolean;
   discoveryUrl?: string;
   allowUnverifiedLanControl?: boolean;
+  lanKey?: string;
+  advertisedIp?: string;
+  localPort?: number;
+  commandPayloads?: Record<string, Record<string, unknown>>;
 }
 
 export interface CoffeeStatus {
@@ -19,7 +23,7 @@ export interface CoffeeStatus {
   filterNeedsChange?: boolean;
   activeRecipe?: string;
   recipes?: string[];
-  source: "cloud-bridge" | "unavailable";
+  source: "cloud-bridge" | "local-wifi" | "unavailable";
 }
 
 export interface CoffeeTransport {
