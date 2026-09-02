@@ -1,0 +1,18 @@
+{
+  "pluginAlias": "DeLonghiCoffee",
+  "pluginType": "platform",
+  "schema": {
+    "type": "object",
+    "properties": {
+      "name": { "title": "Accessory name", "type": "string", "default": "De'Longhi Coffee" },
+      "pollIntervalSeconds": { "title": "Poll interval (seconds)", "type": "integer", "default": 60, "minimum": 15 },
+      "cloudBridgeUrl": { "title": "Coffee Link/Ayla bridge URL", "type": "string", "description": "Optional HTTPS bridge endpoint. It must expose GET /status and POST /command." },
+      "cloudBridgeToken": { "title": "Bridge token", "type": "string", "format": "password" },
+      "lanIp": { "title": "Known machine IP", "type": "string", "description": "Optional; discovery will use this first." },
+      "enableLanDiscovery": { "title": "Discover LAN IP", "type": "boolean", "default": true },
+      "discoveryUrl": { "title": "Discovery endpoint", "type": "string", "description": "Optional authenticated endpoint returning { ip }. The plugin does not guess or control a LAN protocol." },
+      "allowUnverifiedLanControl": { "title": "Allow unverified LAN control", "type": "boolean", "default": false, "description": "Unsafe and unsupported. Keep disabled; LAN discovery does not enable direct control." }
+    },
+    "required": []
+  }
+}
