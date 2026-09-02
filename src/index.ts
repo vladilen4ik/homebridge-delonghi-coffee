@@ -30,8 +30,8 @@ class DeLonghiCoffeePlatform implements DynamicPlatformPlugin {
     this.configureServices(this.accessory);
     let machineIp: string | undefined;
     let lanKey = this.config.lanKey;
-    if (this.config.cloudEmail && this.config.cloudPassword) {
-      try { const machine = await discoverCoffeeLinkMachine(this.config.cloudEmail, this.config.cloudPassword, this.config.cloudDeviceDsn); machineIp = machine.lanIp; lanKey = machine.lanKey; this.log.info(`Coffee Link found ${machine.model} (${machine.dsn}) and supplied the local LAN configuration.`); }
+    if (this.config.cloudEmail && this.config.cloudPassword && this.config.cloudApiKey && this.config.cloudClientId && this.config.cloudClientSecret) {
+      try { const machine = await discoverCoffeeLinkMachine(this.config.cloudEmail, this.config.cloudPassword, { apiKey: this.config.cloudApiKey, clientId: this.config.cloudClientId, clientSecret: this.config.cloudClientSecret }, this.config.cloudDeviceDsn); machineIp = machine.lanIp; lanKey = machine.lanKey; this.log.info(`Coffee Link found ${machine.model} (${machine.dsn}) and supplied the local LAN configuration.`); }
       catch (error) { this.log.warn(`Coffee Link cloud connection failed: ${(error as Error).message}`); }
     }
     if (this.config.enableLanDiscovery !== false) {
