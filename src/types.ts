@@ -4,6 +4,9 @@ export interface PlatformConfig {
   pollIntervalSeconds?: number;
   cloudBridgeUrl?: string;
   cloudBridgeToken?: string;
+  cloudEmail?: string;
+  cloudPassword?: string;
+  cloudDeviceDsn?: string;
   lanIp?: string;
   enableLanDiscovery?: boolean;
   discoveryUrl?: string;
