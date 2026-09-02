@@ -1,5 +1,6 @@
 export interface PlatformConfig {
   name?: string;
+  machineModel?: "ECAM610.75";
   pollIntervalSeconds?: number;
   cloudBridgeUrl?: string;
   cloudBridgeToken?: string;
