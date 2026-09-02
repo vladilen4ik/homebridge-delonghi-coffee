@@ -4,6 +4,10 @@ Homebridge V3 platform for De'Longhi Coffee Link machines, including PrimaDonna 
 
 The current V3 profile targets **PrimaDonna Soul ECAM610.75** (the millcore Wi-Fi family).
 
+## Direct Coffee Link connection
+
+In the Homebridge settings, enter your Coffee Link email and password (and a DSN only if you have more than one machine). The plugin signs in from the Homebridge host, locates the ECAM610.75, and obtains its current LAN IP and cloud-issued LAN key. It uses them only in memory to start local Wi-Fi mode; they are not logged. `advertisedIp` is still required because it is the address the machine calls back.
+
 ## V3 local Wi-Fi mode
 
 V3 uses De'Longhi's authenticated local registration and encrypted callback flow when you provide the machine IP, its cloud-issued LAN key, and the Homebridge host's LAN IP. It starts a listener (default port `10280`), registers it with the machine, handles key exchange, accepts encrypted local telemetry, and queues only command payloads that **you have verified for your exact machine/firmware**.
