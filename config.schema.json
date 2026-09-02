@@ -6,12 +6,16 @@
     "properties": {
       "name": { "title": "Accessory name", "type": "string", "default": "De'Longhi Coffee" },
       "pollIntervalSeconds": { "title": "Poll interval (seconds)", "type": "integer", "default": 60, "minimum": 15 },
-      "cloudBridgeUrl": { "title": "Coffee Link/Ayla bridge URL", "type": "string", "description": "Optional HTTPS bridge endpoint. It must expose GET /status and POST /command." },
+      "lanKey": { "title": "LAN key", "type": "string", "format": "password", "description": "Cloud-issued LAN key for this machine. Required for local Wi-Fi mode; never share it." },
+      "advertisedIp": { "title": "Homebridge LAN IP", "type": "string", "description": "IP address the coffee machine can call back to." },
+      "localPort": { "title": "Local listener port", "type": "integer", "default": 10280, "minimum": 1024, "maximum": 65535 },
+      "commandPayloads": { "title": "Verified local command payloads", "type": "object", "description": "Optional model-verified ECAM payload map. Example: {\"start\": {...}, \"stop\": {...}}." },
+      "cloudBridgeUrl": { "title": "Coffee Link/Ayla bridge URL (fallback)", "type": "string", "description": "Optional HTTPS fallback endpoint. It must expose GET /status and POST /command." },
       "cloudBridgeToken": { "title": "Bridge token", "type": "string", "format": "password" },
       "lanIp": { "title": "Known machine IP", "type": "string", "description": "Optional; discovery will use this first." },
       "enableLanDiscovery": { "title": "Discover LAN IP", "type": "boolean", "default": true },
       "discoveryUrl": { "title": "Discovery endpoint", "type": "string", "description": "Optional authenticated endpoint returning { ip }. The plugin does not guess or control a LAN protocol." },
-      "allowUnverifiedLanControl": { "title": "Allow unverified LAN control", "type": "boolean", "default": false, "description": "Unsafe and unsupported. Keep disabled; LAN discovery does not enable direct control." }
+      "allowUnverifiedLanControl": { "title": "Allow unverified LAN control", "type": "boolean", "default": false, "description": "Deprecated. V3 only sends payloads explicitly supplied in commandPayloads." }
     },
     "required": []
   }
