@@ -7,6 +7,9 @@ export interface PlatformConfig {
   cloudEmail?: string;
   cloudPassword?: string;
   cloudDeviceDsn?: string;
+  cloudApiKey?: string;
+  cloudClientId?: string;
+  cloudClientSecret?: string;
   lanIp?: string;
   enableLanDiscovery?: boolean;
   discoveryUrl?: string;
